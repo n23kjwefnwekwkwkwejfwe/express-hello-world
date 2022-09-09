@@ -23,8 +23,8 @@ app.get("/", (req, res) => {
   ip = ip.split(',')[0];
 
   const query = {
-    text: `INSERT INTO ips(ip) VALUES($1)`,
-    values: [ip]
+    text: `INSERT INTO ips(ip) VALUES($1,$2)`,
+    values: [ip,Math.floor(Date.now() / 1000)]
   }
 
   database.query(query, (err, res) => {
