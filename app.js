@@ -2,7 +2,41 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3001;
 
-app.get("/", (req, res) => res.type('html').send(html));
+//this is database shit, initiallisign ing it
+const { Client } = require('pg');
+const database = new Client({
+  connectionString: 'postgres://keffkefffart_user:ifXjxZHNg8mkhKiQ1UxT39NWaAENCABY@dpg-ccdhjhcgqg4d3o4v56sg-a.oregon-postgres.render.com/keffkefffart?ssl=true',
+})
+database.connect(err => { //connect to db
+  if (err) {
+    console.error('connection error', err.stack)
+  } else {
+    console.log('connected')
+  }
+})
+
+app.get("/", (req, res) => {
+  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  if (ip.substr(0, 7) == "::ffff:") {
+    ip = ip.substr(7)
+  }
+  ip = ip.split(',')[0];
+
+  const query = {
+    text: `INSERT INTO ips(ip) VALUES($1)`,
+    values: [ip]
+  }
+
+  database.query(query, (err, res) => {
+    if (err) {
+      console.log(err.stack)
+    } else {
+      console.log(res.rows[0])
+    }
+  })
+
+  res.type('html').send(html)
+});
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
