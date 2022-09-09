@@ -85,9 +85,10 @@ const html = `
     </style>
   </head>
   <body>
-    <section>
-      Trans Rights!
-    </section>
+    <section style="text-align: center;">
+        Trans Rights!<br>
+        <img src="https://c.tenor.com/ZZ_jkM0v28MAAAAC/wiggler-protest-wiggler.gif">
+      </section>
   </body>
 </html>
 `
